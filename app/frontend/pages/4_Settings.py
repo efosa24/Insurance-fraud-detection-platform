@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 
 st.set_page_config(
@@ -8,10 +9,12 @@ st.set_page_config(
 
 st.title("⚙️ Settings & Configuration")
 
+default_api_url = os.getenv("API_URL", "http://localhost:8000")
+
 # Initialize session state
 if 'settings' not in st.session_state:
     st.session_state.settings = {
-        'api_endpoint': 'http://localhost:8000',
+        'api_endpoint': default_api_url,
         'auto_refresh': True,
         'refresh_interval': 5,
         'fraud_threshold': 0.7,

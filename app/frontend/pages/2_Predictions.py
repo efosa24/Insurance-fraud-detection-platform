@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import requests
 import pandas as pd
@@ -18,10 +19,17 @@ if 'predictions_history' not in st.session_state:
     st.session_state.predictions_history = []
 
 # Sidebar for API configuration
+default_api_url = os.getenv("API_URL", "http://localhost:8000")
+if 'api_endpoint' not in st.session_state:
+    st.session_state['api_endpoint'] = default_api_url
+
 with st.sidebar:
     st.markdown("### API Configuration")
-    api_url = st.text_input("API Endpoint", value="http://localhost:8000")
+    api_url = st.text_input("API Endpoint", value=st.session_state['api_endpoint'])
     st.divider()
+
+# Persist endpoint for this session
+st.session_state['api_endpoint'] = api_url
 
 # Form for prediction
 st.markdown("## Case Information")
