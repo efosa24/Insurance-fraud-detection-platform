@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile.api
     container_name: fraud-api
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       - PYTHONUNBUFFERED=1
       - LOG_LEVEL=INFO
@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile.dashboard
     container_name: fraud-dashboard
     ports:
-      - "8501:8501"
+      - "8502:8501"
     environment:
       - PYTHONUNBUFFERED=1
       - API_URL=http://fraud-api:8000
