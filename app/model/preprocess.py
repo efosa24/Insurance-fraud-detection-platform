@@ -54,6 +54,15 @@ class RangeMapper(BaseEstimator, TransformerMixin):
         return mapped.reshape(orig_shape)
 
 
+def range_mapper_transform(arr):
+    """Top-level wrapper for RangeMapper.transform to allow pickling.
+
+    Joblib/pickle cannot serialize locally defined lambdas. Using a
+    top-level function ensures the transformer is picklable.
+    """
+    return RangeMapper().transform(arr)
+
+
 def build_preprocessor(df, target_column):
     df = df.copy()
 
@@ -102,7 +111,7 @@ def build_preprocessor(df, target_column):
     # range-like transformer: map to numeric, impute, scale
     range_transformer = Pipeline(
         steps=[
-            ("mapper", FunctionTransformer(lambda arr: RangeMapper().transform(arr), validate=False)),
+            ("mapper", FunctionTransformer(range_mapper_transform, validate=False)),
             ("imputer", SimpleImputer(strategy="median")),
             ("scaler", StandardScaler()),
         ]
